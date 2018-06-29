@@ -14,18 +14,15 @@
 
 import lowPriorityWarning from 'shared/lowPriorityWarning';
 import describeComponentFrame from 'shared/describeComponentFrame';
+import isValidElementType from 'shared/isValidElementType';
 import getComponentName from 'shared/getComponentName';
 import {
   getIteratorFn,
-  REACT_FRAGMENT_TYPE,
-  REACT_STRICT_MODE_TYPE,
-  REACT_ASYNC_MODE_TYPE,
-  REACT_PROVIDER_TYPE,
-  REACT_CONTEXT_TYPE,
   REACT_FORWARD_REF_TYPE,
+  REACT_FRAGMENT_TYPE,
 } from 'shared/ReactSymbols';
 import checkPropTypes from 'prop-types/checkPropTypes';
-import warning from 'fbjs/lib/warning';
+import warning from 'shared/warning';
 
 import ReactCurrentOwner from './ReactCurrentOwner';
 import {isValidElement, createElement, cloneElement} from './ReactElement';
@@ -36,8 +33,6 @@ let propTypesMisspellWarningShown;
 
 let getDisplayName = () => {};
 let getStackAddendum = () => {};
-
-let VALID_FRAGMENT_PROPS;
 
 if (__DEV__) {
   currentlyValidatingElement = null;
@@ -51,10 +46,20 @@ if (__DEV__) {
       return '#text';
     } else if (typeof element.type === 'string') {
       return element.type;
-    } else if (element.type === REACT_FRAGMENT_TYPE) {
+    }
+
+    const type = element.type;
+    if (type === REACT_FRAGMENT_TYPE) {
       return 'React.Fragment';
+    } else if (
+      typeof type === 'object' &&
+      type !== null &&
+      type.$$typeof === REACT_FORWARD_REF_TYPE
+    ) {
+      const functionName = type.render.displayName || type.render.name || '';
+      return functionName !== '' ? `ForwardRef(${functionName})` : 'ForwardRef';
     } else {
-      return element.type.displayName || element.type.name || 'Unknown';
+      return type.displayName || type.name || 'Unknown';
     }
   };
 
@@ -72,8 +77,6 @@ if (__DEV__) {
     stack += ReactDebugCurrentFrame.getStackAddendum() || '';
     return stack;
   };
-
-  VALID_FRAGMENT_PROPS = new Map([['children', true], ['key', true]]);
 }
 
 function getDeclarationErrorAddendum() {
@@ -224,20 +227,29 @@ function validateChildKeys(node, parentType) {
  * @param {ReactElement} element
  */
 function validatePropTypes(element) {
-  const componentClass = element.type;
-  if (typeof componentClass !== 'function') {
+  const type = element.type;
+  let name, propTypes;
+  if (typeof type === 'function') {
+    // Class or functional component
+    name = type.displayName || type.name;
+    propTypes = type.propTypes;
+  } else if (
+    typeof type === 'object' &&
+    type !== null &&
+    type.$$typeof === REACT_FORWARD_REF_TYPE
+  ) {
+    // ForwardRef
+    const functionName = type.render.displayName || type.render.name || '';
+    name = functionName !== '' ? `ForwardRef(${functionName})` : 'ForwardRef';
+    propTypes = type.propTypes;
+  } else {
     return;
   }
-  const name = componentClass.displayName || componentClass.name;
-  const propTypes = componentClass.propTypes;
   if (propTypes) {
     currentlyValidatingElement = element;
     checkPropTypes(propTypes, element.props, 'prop', name, getStackAddendum);
     currentlyValidatingElement = null;
-  } else if (
-    componentClass.PropTypes !== undefined &&
-    !propTypesMisspellWarningShown
-  ) {
+  } else if (type.PropTypes !== undefined && !propTypesMisspellWarningShown) {
     propTypesMisspellWarningShown = true;
     warning(
       false,
@@ -245,9 +257,9 @@ function validatePropTypes(element) {
       name || 'Unknown',
     );
   }
-  if (typeof componentClass.getDefaultProps === 'function') {
+  if (typeof type.getDefaultProps === 'function') {
     warning(
-      componentClass.getDefaultProps.isReactClassApproved,
+      type.getDefaultProps.isReactClassApproved,
       'getDefaultProps is only used on classic React.createClass ' +
         'definitions. Use a static property named `defaultProps` instead.',
     );
@@ -264,7 +276,7 @@ function validateFragmentProps(fragment) {
   const keys = Object.keys(fragment.props);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    if (!VALID_FRAGMENT_PROPS.has(key)) {
+    if (key !== 'children' && key !== 'key') {
       warning(
         false,
         'Invalid prop `%s` supplied to `React.Fragment`. ' +
@@ -288,18 +300,7 @@ function validateFragmentProps(fragment) {
 }
 
 export function createElementWithValidation(type, props, children) {
-  const validType =
-    typeof type === 'string' ||
-    typeof type === 'function' ||
-    // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-    type === REACT_FRAGMENT_TYPE ||
-    type === REACT_ASYNC_MODE_TYPE ||
-    type === REACT_STRICT_MODE_TYPE ||
-    (typeof type === 'object' &&
-      type !== null &&
-      (type.$$typeof === REACT_PROVIDER_TYPE ||
-        type.$$typeof === REACT_CONTEXT_TYPE ||
-        type.$$typeof === REACT_FORWARD_REF_TYPE));
+  const validType = isValidElementType(type);
 
   // We warn in this case but don't throw. We expect the element creation to
   // succeed and there will likely be errors in render.

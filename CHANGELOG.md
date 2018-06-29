@@ -5,24 +5,179 @@
     Click to see more.
   </summary>
 
+</details>
+
+## 16.4.1 (June 13, 2018)
+
 ### React
 
-* Fix a false positive warning in IE11 when using `React.Fragment`. ([@XaveScor](https://github.com/XaveScor) in [#11823](https://github.com/facebook/react/pull/11823))
+* You can now assign `propTypes` to components returned by `React.ForwardRef`. ([@bvaughn](https://github.com/bvaughn) in [#12911](https://github.com/facebook/react/pull/12911))
 
 ### React DOM
 
+* Fix a crash when the input `type` changes from some other types to `text`. ([@spirosikmd](https://github.com/spirosikmd) in [#12135](https://github.com/facebook/react/pull/12135))
+* Fix a crash in IE11 when restoring focus to an SVG element. ([@ThaddeusJiang](https://github.com/ThaddeusJiang) in [#12996](https://github.com/facebook/react/pull/12996))
+* Fix a range input not updating in some cases. ([@Illu](https://github.com/Illu) in [#12939](https://github.com/facebook/react/pull/12939))
+* Fix input validation triggering unnecessarily in Firefox. ([@nhunzaker](https://github.com/nhunzaker) in [#12925](https://github.com/facebook/react/pull/12925))
+* Fix an incorrect `event.target` value for the `onChange` event in IE9. ([@nhunzaker](https://github.com/nhunzaker) in [#12976](https://github.com/facebook/react/pull/12976))
+* Fix a false positive error when returning an empty `<React.Fragment />` from a component. ([@philipp-spiess](https://github.com/philipp-spiess) in [#12966](https://github.com/facebook/react/pull/12966))
+
+### React DOM Server
+
+* Fix an incorrect value being provided by new context API. ([@ericsoderberghp](https://github.com/ericsoderberghp) in [#12985](https://github.com/facebook/react/pull/12985), [@gaearon](https://github.com/gaearon) in [#13019](https://github.com/facebook/react/pull/13019))
+
+### React Test Renderer
+
+* Allow multiple root children in test renderer traversal API. ([@gaearon](https://github.com/gaearon) in [#13017](https://github.com/facebook/react/pull/13017))
+* Fix `getDerivedStateFromProps()` in the shallow renderer to not discard the pending state. ([@fatfisz](https://github.com/fatfisz) in [#13030](https://github.com/facebook/react/pull/13030))
+
+## 16.4.0 (May 23, 2018)
+
+### React
+
+* Add a new [experimental](https://github.com/reactjs/rfcs/pull/51) `React.unstable_Profiler` component for measuring performance. ([@bvaughn](https://github.com/bvaughn) in [#12745](https://github.com/facebook/react/pull/12745))
+
+### React DOM
+
+* Add support for the Pointer Events specification. ([@philipp-spiess](https://github.com/philipp-spiess) in [#12507](https://github.com/facebook/react/pull/12507))
+* Properly call `getDerivedStateFromProps()` regardless of the reason for re-rendering. ([@acdlite](https://github.com/acdlite) in [#12600](https://github.com/facebook/react/pull/12600) and [#12802](https://github.com/facebook/react/pull/12802))
+* Fix a bug that prevented context propagation in some cases. ([@gaearon](https://github.com/gaearon) in [#12708](https://github.com/facebook/react/pull/12708))
+* Fix re-rendering of components using `forwardRef()` on a deeper `setState()`. ([@gaearon](https://github.com/gaearon) in [#12690](https://github.com/facebook/react/pull/12690))
+* Fix some attributes incorrectly getting removed from custom element nodes. ([@airamrguez](https://github.com/airamrguez) in [#12702](https://github.com/facebook/react/pull/12702))
+* Fix context providers to not bail out on children if there's a legacy context provider above. ([@gaearon](https://github.com/gaearon) in [#12586](https://github.com/facebook/react/pull/12586))
+* Add the ability to specify `propTypes` on a context provider component. ([@nicolevy](https://github.com/nicolevy) in [#12658](https://github.com/facebook/react/pull/12658))
+* Fix a false positive warning when using `react-lifecycles-compat` in `<StrictMode>`. ([@bvaughn](https://github.com/bvaughn) in [#12644](https://github.com/facebook/react/pull/12644))
+* Warn when the `forwardRef()` render function has `propTypes` or `defaultProps`. ([@bvaughn](https://github.com/bvaughn) in [#12644](https://github.com/facebook/react/pull/12644))
+* Improve how `forwardRef()` and context consumers are displayed in the component stack. ([@sophiebits](https://github.com/sophiebits) in [#12777](https://github.com/facebook/react/pull/12777))
+* Change internal event names. This can break third-party packages that rely on React internals in unsupported ways. ([@philipp-spiess](https://github.com/philipp-spiess) in [#12629](https://github.com/facebook/react/pull/12629))
+
+### React Test Renderer
+
+* Fix the `getDerivedStateFromProps()` support to match the new React DOM behavior. ([@koba04](https://github.com/koba04) in [#12676](https://github.com/facebook/react/pull/12676))
+* Fix a `testInstance.parent` crash when the parent is a fragment or another special node. ([@gaearon](https://github.com/gaearon) in [#12813](https://github.com/facebook/react/pull/12813))
+* `forwardRef()` components are now discoverable by the test renderer traversal methods. ([@gaearon](https://github.com/gaearon) in [#12725](https://github.com/facebook/react/pull/12725))
+* Shallow renderer now ignores `setState()` updaters that return `null` or `undefined`. ([@koba04](https://github.com/koba04) in [#12756](https://github.com/facebook/react/pull/12756))
+
+### React ART
+
+* Fix reading context provided from the tree managed by React DOM. ([@acdlite](https://github.com/acdlite) in [#12779](https://github.com/facebook/react/pull/12779))
+
+### React Call Return (Experimental)
+
+* This experiment was deleted because it was affecting the bundle size and the API wasn't good enough. It's likely to come back in the future in some other form. ([@gaearon](https://github.com/gaearon) in [#12820](https://github.com/facebook/react/pull/12820))
+
+### React Reconciler (Experimental)
+
+* The [new host config shape](https://github.com/facebook/react/blob/c601f7a64640290af85c9f0e33c78480656b46bc/packages/react-noop-renderer/src/createReactNoop.js#L82-L285) is flat and doesn't use nested objects. ([@gaearon](https://github.com/gaearon) in [#12792](https://github.com/facebook/react/pull/12792))
+
+## 16.3.2 (April 16, 2018)
+
+### React
+
+* Improve the error message when passing `null` or `undefined` to `React.cloneElement`. ([@nicolevy](https://github.com/nicolevy) in [#12534](https://github.com/facebook/react/pull/12534))
+
+### React DOM
+
+* Fix an IE crash in development when using `<StrictMode>`. ([@bvaughn](https://github.com/bvaughn) in [#12546](https://github.com/facebook/react/pull/12546))
+* Fix labels in User Timing measurements for new component types. ([@bvaughn](https://github.com/bvaughn) in [#12609](https://github.com/facebook/react/pull/12609))
+* Improve the warning about wrong component type casing. ([@nicolevy](https://github.com/nicolevy) in [#12533](https://github.com/facebook/react/pull/12533))
+* Improve general performance in development mode. ([@gaearon](https://github.com/gaearon) in [#12537](https://github.com/facebook/react/pull/12537))
+* Improve performance of the experimental `unstable_observedBits` API with nesting. ([@gaearon](https://github.com/gaearon) in [#12543](https://github.com/facebook/react/pull/12543))
+
+### React Test Renderer
+
+* Add a UMD build. ([@bvaughn](https://github.com/bvaughn) in [#12594](https://github.com/facebook/react/pull/12594))
+
+## 16.3.1 (April 3, 2018)
+
+### React
+
+* Fix a false positive warning in IE11 when using `Fragment`. ([@heikkilamarko](https://github.com/heikkilamarko) in [#12504](https://github.com/facebook/react/pull/12504))
+* Prefix a private API. ([@Andarist](https://github.com/Andarist) in [#12501](https://github.com/facebook/react/pull/12501))
+* Improve the warning when calling `setState()` in constructor. ([@gaearon](https://github.com/gaearon) in [#12532](https://github.com/facebook/react/pull/12532))
+
+### React DOM
+
+* Fix `getDerivedStateFromProps()` not getting applied in some cases. ([@acdlite](https://github.com/acdlite) in [#12528](https://github.com/facebook/react/pull/12528))
+* Fix a performance regression in development mode. ([@gaearon](https://github.com/gaearon) in [#12510](https://github.com/facebook/react/pull/12510))
+* Fix error handling bugs in development mode. ([@gaearon](https://github.com/gaearon) and [@acdlite](https://github.com/acdlite) in [#12508](https://github.com/facebook/react/pull/12508))
+* Improve user timing API messages for profiling. ([@flarnie](https://github.com/flarnie) in [#12384](https://github.com/facebook/react/pull/12384))
+
+### Create Subscription
+
+* Set the package version to be in sync with React releases. ([@bvaughn](https://github.com/bvaughn) in [#12526](https://github.com/facebook/react/pull/12526))
+* Add a peer dependency on React 16.3+. ([@NMinhNguyen](https://github.com/NMinhNguyen) in [#12496](https://github.com/facebook/react/pull/12496))
+
+## 16.3.0 (March 29, 2018)
+
+### React
+
+* Add a new officially supported context API. ([@acdlite](https://github.com/acdlite) in [#11818](https://github.com/facebook/react/pull/11818))
+* Add a new `React.createRef()` API as an ergonomic alternative to callback refs. ([@trueadm](https://github.com/trueadm) in [#12162](https://github.com/facebook/react/pull/12162))
+* Add a new `React.forwardRef()` API to let components forward their refs to a child. ([@bvaughn](https://github.com/bvaughn) in [#12346](https://github.com/facebook/react/pull/12346))
+* Fix a false positive warning in IE11 when using `React.Fragment`. ([@XaveScor](https://github.com/XaveScor) in [#11823](https://github.com/facebook/react/pull/11823))
+* Replace `React.unstable_AsyncComponent` with `React.unstable_AsyncMode`. ([@acdlite](https://github.com/acdlite) in [#12117](https://github.com/facebook/react/pull/12117))
+* Improve the error message when calling `setState()` on an unmounted component. ([@sophiebits](https://github.com/sophiebits) in [#12347](https://github.com/facebook/react/pull/12347))
+
+### React DOM
+
+* Add a new `getDerivedStateFromProps()` lifecycle and `UNSAFE_` aliases for the legacy lifecycles. ([@bvaughn](https://github.com/bvaughn) in [#12028](https://github.com/facebook/react/pull/12028))
+* Add a new `getSnapshotBeforeUpdate()` lifecycle. ([@bvaughn](https://github.com/bvaughn) in [#12404](https://github.com/facebook/react/pull/12404))
+* Add a new `<React.StrictMode>` wrapper to help prepare apps for async rendering. ([@bvaughn](https://github.com/bvaughn) in [#12083](https://github.com/facebook/react/pull/12083))
+* Add support for `onLoad` and `onError` events on the `<link>` tag. ([@roderickhsiao](https://github.com/roderickhsiao) in [#11825](https://github.com/facebook/react/pull/11825))
+* Add support for `noModule` boolean attribute on the `<script>` tag. ([@aweary](https://github.com/aweary) in [#11900](https://github.com/facebook/react/pull/11900))
 * Fix minor DOM input bugs in IE and Safari. ([@nhunzaker](https://github.com/nhunzaker) in [#11534](https://github.com/facebook/react/pull/11534))
+* Correctly detect Ctrl + Enter in `onKeyPress` in more browsers. ([@nstraub](https://github.com/nstraub) in [#10514](https://github.com/facebook/react/pull/10514))
 * Fix containing elements getting focused on SSR markup mismatch. ([@koba04](https://github.com/koba04) in [#11737](https://github.com/facebook/react/pull/11737))
 * Fix `value` and `defaultValue` to ignore Symbol values. ([@nhunzaker](https://github.com/nhunzaker) in [#11741](https://github.com/facebook/react/pull/11741))
+* Fix refs to class components not getting cleaned up when the attribute is removed. ([@bvaughn](https://github.com/bvaughn) in [#12178](https://github.com/facebook/react/pull/12178))
+* Fix an IE/Edge issue when rendering inputs into a different window. ([@M-ZubairAhmed](https://github.com/M-ZubairAhmed) in [#11870](https://github.com/facebook/react/pull/11870))
 * Throw with a meaningful message if the component runs after jsdom has been destroyed. ([@gaearon](https://github.com/gaearon) in [#11677](https://github.com/facebook/react/pull/11677))
+* Don't crash if there is a global variable called `opera` with a `null` value. [@alisherdavronov](https://github.com/alisherdavronov) in [#11854](https://github.com/facebook/react/pull/11854))
+* Don't check for old versions of Opera. ([@skiritsis](https://github.com/skiritsis) in [#11921](https://github.com/facebook/react/pull/11921))
 * Deduplicate warning messages about `<option selected>`. ([@watadarkstar](https://github.com/watadarkstar) in [#11821](https://github.com/facebook/react/pull/11821))
+* Deduplicate warning messages about invalid callback. ([@yenshih](https://github.com/yenshih) in [#11833](https://github.com/facebook/react/pull/11833))
 * Deprecate `ReactDOM.unstable_createPortal()` in favor of `ReactDOM.createPortal()`. ([@prometheansacrifice](https://github.com/prometheansacrifice) in [#11747](https://github.com/facebook/react/pull/11747))
+* Don't emit User Timing entries for context types. ([@abhaynikam](https://github.com/abhaynikam) in [#12250](https://github.com/facebook/react/pull/12250))
+* Improve the error message when context consumer child isn't a function. ([@raunofreiberg](https://github.com/raunofreiberg) in [#12267](https://github.com/facebook/react/pull/12267)) 
+* Improve the error message when adding a ref to a functional component. ([@skiritsis](https://github.com/skiritsis) in [#11782](https://github.com/facebook/react/pull/11782))
 
 ### React DOM Server
 
 * Prevent an infinite loop when attempting to render portals with SSR. ([@gaearon](https://github.com/gaearon) in [#11709](https://github.com/facebook/react/pull/11709))
+* Warn if a class doesn't extend `React.Component`. ([@wyze](https://github.com/wyze) in [#11993](https://github.com/facebook/react/pull/11993))
+* Fix an issue with `this.state` of different components getting mixed up. ([@sophiebits](https://github.com/sophiebits) in [#12323](https://github.com/facebook/react/pull/12323))
+* Provide a better message when component type is undefined. ([@HeroProtagonist](https://github.com/HeroProtagonist) in [#11966](https://github.com/facebook/react/pull/11966))
 
-</details>
+## React Test Renderer
+
+* Fix handling of fragments in `toTree()`. ([@maciej-ka](https://github.com/maciej-ka) in [#12107](https://github.com/facebook/react/pull/12107) and [@gaearon](https://github.com/gaearon) in [#12154](https://github.com/facebook/react/pull/12154))
+* Shallow renderer should assign state to `null` for components that don't set it. ([@jwbay](https://github.com/jwbay) in [#11965](https://github.com/facebook/react/pull/11965))
+* Shallow renderer should filter legacy context according to `contextTypes`. ([@koba04](https://github.com/koba04) in [#11922](https://github.com/facebook/react/pull/11922))
+* Add an unstable API for testing asynchronous rendering. ([@acdlite](https://github.com/acdlite) in [#12478](https://github.com/facebook/react/pull/12478))
+
+### React Is (New)
+
+* First release of the [new package](https://github.com/facebook/react/tree/master/packages/react-is) that libraries can use to detect different React node types. ([@bvaughn](https://github.com/bvaughn) in [#12199](https://github.com/facebook/react/pull/12199))
+* Add `ReactIs.isValidElementType()` to help higher-order components validate their inputs. ([@jamesreggio](https://github.com/jamesreggio) in [#12483](https://github.com/facebook/react/pull/12483))
+
+### React Lifecycles Compat (New)
+
+* First release of the [new package](https://github.com/reactjs/react-lifecycles-compat) to help library developers target multiple versions of React. ([@bvaughn](https://github.com/bvaughn) in [#12105](https://github.com/facebook/react/pull/12105))
+
+### Create Subscription (New)
+
+* First release of the [new package](https://github.com/facebook/react/tree/master/packages/create-subscription) to subscribe to external data sources safely for async rendering. ([@bvaughn](https://github.com/bvaughn) in [#12325](https://github.com/facebook/react/pull/12325))
+
+### React Reconciler (Experimental)
+
+* Expose `react-reconciler/persistent` for building renderers that use persistent data structures. ([@gaearon](https://github.com/gaearon) in [#12156](https://github.com/facebook/react/pull/12156))
+* Pass host context to `finalizeInitialChildren()`. ([@jquense](https://github.com/jquense) in [#11970](https://github.com/facebook/react/pull/11970))
+* Remove `useSyncScheduling` from the host config. ([@acdlite](https://github.com/acdlite) in [#11771](https://github.com/facebook/react/pull/11771))
+
+### React Call Return (Experimental)
+
+* Fix a crash on updates. ([@rmhartog](https://github.com/rmhartog) in [#11955](https://github.com/facebook/react/pull/11955))
 
 ## 16.2.0 (November 28, 2017)
 
