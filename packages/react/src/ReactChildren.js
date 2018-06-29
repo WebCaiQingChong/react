@@ -218,8 +218,8 @@ function traverseAllChildrenImpl(
  * - `traverseAllChildren(this.props.leftPanelChildren, ...)`
  *
  * The `traverseContext` is an optional argument that is passed through the
- * entire traversal. It can be used to store accumulations or anything else that
- * the callback might find relevant.
+ * entire traversal(遍历). It can be used to store accumulations(积累) or anything else that
+ * the callback might find relevant(相关).
  *
  * @param {?*} children Children tree object.
  * @param {!function} callback To invoke upon traversing each child.
@@ -235,15 +235,15 @@ function traverseAllChildren(children, callback, traverseContext) {
 }
 
 /**
- * Generate a key string that identifies a component within a set.
+ * Generate a key string that identifies(识别) a component within a set.
  *
- * @param {*} component A component that could contain a manual key.
+ * @param {*} component A component that could contain a manual(手工的，人工的) key.
  * @param {number} index Index that is used if a manual key is not provided.
  * @return {string}
  */
 function getComponentKey(component, index) {
-  // Do some typechecking here since we call this blindly. We want to ensure
-  // that we don't block potential future ES APIs.
+  // Do some typechecking here since we call this blindly(轻率的). We want to ensure
+  // that we don't block(阻塞) potential future ES APIs.
   if (
     typeof component === 'object' &&
     component !== null &&
@@ -411,3 +411,6 @@ export {
   onlyChild as only,
   toArray,
 };
+
+
+// 暴露出react child 中的五个方法。目前仅使用过forEach

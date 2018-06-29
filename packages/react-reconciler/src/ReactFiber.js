@@ -68,14 +68,14 @@ if (__DEV__) {
 // A Fiber is work on a Component that needs to be done or was done. There can
 // be more than one per component.
 export type Fiber = {|
-  // These first fields are conceptually members of an Instance. This used to
-  // be split into a separate type and intersected with the other Fiber fields,
+  // These first fields are conceptually(概念的) members of an Instance(实例). This used to
+  // be split into a separate type and intersected(分割) with the other Fiber fields,
   // but until Flow fixes its intersection bugs, we've merged them into a
   // single type.
 
   // An Instance is shared between all versions of a component. We can easily
   // break this out into a separate object to avoid copying so much to the
-  // alternate versions of the tree. We put this on a single object for now to
+  // alternate(交替) versions of the tree. We put this on a single object for now to
   // minimize the number of objects created during the initial render.
 
   // Tag identifying the type of fiber.
@@ -250,7 +250,7 @@ export function createWorkInProgress(
 ): Fiber {
   let workInProgress = current.alternate;
   if (workInProgress === null) {
-    // We use a double buffering pooling technique because we know that we'll
+    // We use a double buffering pooling technique(技巧) because we know that we'll
     // only ever need at most two versions of a tree. We pool the "other" unused
     // node that we're free to reuse. This is lazily created to avoid allocating
     // extra objects for things that are never updated. It also allow us to

@@ -26,15 +26,15 @@ function Component(props, context, updater) {
 Component.prototype.isReactComponent = {};
 
 /**
- * Sets a subset of the state. Always use this to mutate
+ * Sets a subset(子集) of the state. Always use this to mutate(改变)
  * state. You should treat `this.state` as immutable.
  *
- * There is no guarantee that `this.state` will be immediately updated, so
- * accessing `this.state` after calling this method may return the old value.
+ * There is no guarantee(保证) that `this.state` will be immediately updated, so
+ * accessing(访问) `this.state` after calling this method may return the old value.
  *
- * There is no guarantee that calls to `setState` will run synchronously,
- * as they may eventually be batched together.  You can provide an optional
- * callback that will be executed when the call to setState is actually
+ * There is no guarantee that calls to `setState` will run synchronously(同步),
+ * as they may eventually(最终) be batched(批处理) together.  You can provide an optional
+ * callback that will be executed(执行) when the call to setState is actually(实际上)
  * completed.
  *
  * When a function is provided to setState, it will be called at some point in
@@ -121,7 +121,7 @@ function ComponentDummy() {}
 ComponentDummy.prototype = Component.prototype;
 
 /**
- * Convenience component with default shallow equality check for sCU.
+ * Convenience(方便) component with default shallow equality check for sCU.
  */
 function PureComponent(props, context, updater) {
   this.props = props;
@@ -132,7 +132,7 @@ function PureComponent(props, context, updater) {
 
 const pureComponentPrototype = (PureComponent.prototype = new ComponentDummy());
 pureComponentPrototype.constructor = PureComponent;
-// Avoid an extra prototype jump for these methods.
+// Avoid(避免) an extra prototype jump for these methods.
 Object.assign(pureComponentPrototype, Component.prototype);
 pureComponentPrototype.isPureReactComponent = true;
 
